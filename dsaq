@@ -1,0 +1,23 @@
+[33mcommit 016194005e9608d1b00b79315ec76f004a701f09[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m
+Author: V7qqq <rodion.titov7q@gmail.com>
+Date:   Wed Jan 22 19:07:09 2025 +0500
+
+    Added HTML header
+
+[33mcommit 456e7a1e6b62434ce44b3b4fdbba5be87d86ba27[m
+Author: V7qqq <rodion.titov7q@gmail.com>
+Date:   Wed Jan 22 19:06:33 2025 +0500
+
+    Added standard HTML page tags
+
+[33mcommit 10cf2a822b903eb827569b648edab03c7767e2d6[m
+Author: V7qqq <rodion.titov7q@gmail.com>
+Date:   Wed Jan 22 19:04:45 2025 +0500
+
+    Added h1 tag
+
+[33mcommit dc8a57d70f851a74d9782020d27206d62a34121b[m
+Author: V7qqq <rodion.titov7q@gmail.com>
+Date:   Wed Jan 22 19:03:13 2025 +0500
+
+    Initial Commit
