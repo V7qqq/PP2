@@ -38,6 +38,7 @@ coin_spawn_delay = random.randint(120, 240)  #делей на спавн от 2 
 coin_timer = 0 #тут он по фреймам будет плюсоваться и уже сравнмваться с coin_spawn_delay
 
 crash = pygame.mixer.Sound("tutorial/crash.wav")
+background = pygame.mixer.Sound("tutorial/background.wav")
 
 # класс врага
 class Enemy(pygame.sprite.Sprite): #наследуем с класса спрайт
@@ -109,6 +110,8 @@ P1 = Player()
 E1 = Enemy()
 C1 = Coin()
 
+background.play(-1)
+
 enemies = pygame.sprite.Group() #формируем группу енемис из класса спрайта
 enemies.add(E1) #добавляем туда енеми машину
 all_sprites = pygame.sprite.Group() #формируем группу спрайтов и вставляем туда плеера и енеми для одновременного например обновления
@@ -117,7 +120,7 @@ all_sprites.add(E1)
 
 # цикл
 running = True
-while running:
+while running: 
     DISPLAYSURF.blit(road, (0,0)) #вставляем картинку на фон
 
     for event in pygame.event.get(): #проверка на выход
@@ -155,6 +158,7 @@ while running:
     # проверка столкновения с врагом
     if pygame.sprite.collide_rect(P1, E1):
         crash.play() #звук
+        background.stop()
         while pygame.mixer.get_busy():
             pygame.time.delay(100)
 
