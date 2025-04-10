@@ -85,6 +85,7 @@ class Coin(pygame.sprite.Sprite):
         self.image = pygame.transform.scale(self.image, (40, 40))
         self.rect = self.image.get_rect()
         self.reset_position()
+        self.value = random.randint(1, 10) #рандомная стоимость монетки от 1 до 10
 
     def reset_position(self): 
         while True:
@@ -93,6 +94,8 @@ class Coin(pygame.sprite.Sprite):
             self.rect.center = (x, y)
             if not self.rect.colliderect(E1.rect):
                 break
+            self.value = random.randint(1, 10)
+
 
     def move(self):
         self.rect.move_ip(0, 10)
@@ -104,6 +107,10 @@ class Coin(pygame.sprite.Sprite):
 
     def draw(self, surface):
         surface.blit(self.image, self.rect)
+        font = pygame.font.SysFont(None, 24)
+        value_text = font.render(str(self.value), True, BLACK)
+        text_rect = value_text.get_rect(center=self.rect.center)
+        surface.blit(value_text, text_rect)
 
 # создаем объекты
 P1 = Player()
@@ -146,11 +153,11 @@ while running:
     # проверка сбора монеты
     if coin_visible and pygame.sprite.collide_rect(P1, C1):
         coin_counter += 1
-        coin_level += 1
+        coin_level += C1.value
         coin_visible = False  # монетка исчезает после сбора
     
     
-    if coin_level == 5: #каждая 5 монетка добавляет +10 фпс усложняя игру
+    if coin_level >= 5: #каждая 5 монетка добавляет +10 фпс усложняя игру
         FPS += 10
         coin_level = 0
     
