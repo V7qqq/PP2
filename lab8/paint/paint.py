@@ -3,43 +3,6 @@ import sys
 
 pygame.init()
 
-#настройка экрана
-WIDTH, HEIGHT = 800, 600
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("PyPaint 🎨")
-clock = pygame.time.Clock()
-
-# цвета
-WHITE = (255, 255, 255)
-BLACK = (0, 0, 0)
-current_color = BLACK
-
-# переменные
-radius = 5
-mode = 'draw'  # draw, rect, circle, erase
-start_pos = None
-last_pos = None
-
-#фон белый 
-screen.fill(WHITE)
-
-def drawLineBetween(surface, start, end, width, color): #функция для плавной отрисовки линий, линейная интерполяция
-    #насколько далеко по X и Y расположены эти две точки.
-    dx = start[0] - end[0]
-    dy = start[1] - end[1]
-    iterations = max(abs(dx), abs(dy)) #сколько шагов нужно сделать, чтобы отрисовать линию. Чем дальше точки, тем больше шагов что бы линия была палвной
-    for i in range(iterations):
-        progress = i / iterations #процент интерполяции
-        x = int(start[0] * (1 - progress) + end[0] * progress)
-        y = int(start[1] * (1 - progress) + end[1] * progress)
-        pygame.draw.circle(surface, color, (x, y), width)
-
-# цикл
-import pygame
-import sys
-
-pygame.init()
-
 # настройки экрана
 WIDTH, HEIGHT = 800, 600
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
