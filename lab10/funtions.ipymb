@@ -1,0 +1,69 @@
+create function find_any(text_thing text)
+returns table(id int, name text, phone text)
+as $$
+begin
+    return query
+    select id, first_name::text as name, phone_number::text as phone
+    from phonebook
+    where first_name ilike '%' || text_thing || '%'
+       or phone_number ilike '%' || text_thing || '%';
+end;
+$$ language plpgsql;
+
+
+
+create procedure add_or_update(name text, phone text)
+as $$
+begin
+    if (select 1 from phonebook where first_name = name) then
+        update phonebook set phone_number = phone where first_name = name;
+    else
+        insert into phonebook(first_name, phone_number) values (name, phone);
+    end if;
+end;
+$$ language plpgsql;
+
+
+
+create procedure insert_many(
+    in names text[],
+    in phones text[],
+    out bad text[]
+)
+as $$
+declare
+    i int := 1;
+    wrong text[] := '{}';
+begin
+    while i <= array_length(names, 1) loop
+        if phones[i] ~ '^\+?[0-9]{7,15}$' then
+            call add_or_update(names[i], phones[i]);
+        else
+            wrong := array_append(wrong, names[i] || ' - ' || phones[i]);
+        end if;
+        i := i + 1;
+    end loop;
+    bad := wrong;
+end;
+$$ language plpgsql;
+
+
+create function get_page(limit_val int, offset_val int)
+returns table(id int, name text, phone text)
+as $$
+begin
+    return query
+    select * from phonebook
+    order by id
+    limit limit_val offset offset_val;
+end;
+$$ language plpgsql;
+
+
+
+create procedure delete_user(info text)
+as $$
+begin
+    delete from phonebook where first_name = info or phone_number = info;
+end;
+$$ language plpgsql;

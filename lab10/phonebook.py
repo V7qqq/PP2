@@ -143,15 +143,70 @@ def delete_data():
 
 #---------------------------------------------------------------------------------------------------------------------------------------------------------
 
+#---------------------------------------------------------------Find Any---------------------------------------------------------------------------------
+def find_any(info):
+    cur.execute("SELECT * FROM find_any(%s)", (info,))
+    rows = cur.fetchall()
+    for row in rows:
+        print(row)
+#---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+#---------------------------------------------------------------Get page---------------------------------------------------------------------------------
+def get_page(limit, offset):
+    cur.execute("SELECT * FROM get_page(%s, %s)", (limit, offset))
+    rows = cur.fetchall()
+    for row in rows:
+        print(row)
+#---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+#---------------------------------------------------------------Add or Update---------------------------------------------------------------------------------
+def add_or_update(name, phone):
+    cur.execute("CALL add_or_update(%s, %s)", (name, phone))
+    conn.commit()
+#---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+#---------------------------------------------------------------Insert Many---------------------------------------------------------------------------------
+def insert_many():
+    print("Insert multiple users")
+    
+    names_input = input("Enter names (with comma): ")
+    phones_input = input("Enter phones (with comma): ")
+    
+    names = [name.strip() for name in names_input.split(",")]
+    phones = [phone.strip() for phone in phones_input.split(",")]
+
+    if len(names) != len(phones):
+        print("incorrect lenght of both lists")
+        return
+
+    cur.execute("CALL insert_many(%s, %s, %s)", (names, phones, None))
+    conn.commit()
+#---------------------------------------------------------------------------------------------------------------------------------------------------------
+ 
+
+ #---------------------------------------------------------------Delete user---------------------------------------------------------------------------------
+def delete_user(info):
+    cur.execute("CALL delete_user(%s)", (info,))
+    conn.commit()
+    
+#---------------------------------------------------------------------------------------------------------------------------------------------------------
+
 # меню
 def menu():
     while True:
-        print("\n📞 PHONEBOOK MENU")
+        print("\n PHONEBOOK MENU")
         print("1 - Insert from console")
         print("2 - Insert from CSV")
         print("3 - Update data")
         print("4 - Query data")
         print("5 - Delete data")
+        print("6 - Find any")
+        print("7 - Get page")
+        print("8 - Add or update")
+        print("9 - Insert many")
+        print("10 - Delete user")
         print("0 - Exit")
         choice = input("Choose option: ")
 
@@ -166,10 +221,26 @@ def menu():
             query_data()
         elif choice == "5":
             delete_data()
+        elif choice == "6":
+            info = input("Enter search info: ")
+            find_any(info)
+        elif choice == "7":
+            limit = int(input("Enter limit: "))
+            offset = int(input("Enter offset: "))
+            get_page(limit, offset)
+        elif choice == "8":
+            name = input("Enter name: ")
+            phone = input("Enter phone: ")
+            add_or_update(name, phone)
+        elif choice == "9":
+            insert_many()
+        elif choice == "10":
+            info = input("Enter name or phone: ")
+            delete_user(info)
         elif choice == "0":
             break
         else:
-            print("Invalid option")
+            print("invalid option")
 
     cur.close()
     conn.close()
